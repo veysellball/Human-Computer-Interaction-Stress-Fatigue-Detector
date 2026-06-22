@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ml_postgres
+    environment:
+      POSTGRES_USER: ml_user
+      POSTGRES_PASSWORD: ml_pass_2026
+      POSTGRES_DB: ml_stress_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ml_user -d ml_stress_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pg_data:
